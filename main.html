@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POPKID GLE PANEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    video#bg-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.6) blur(2px);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+      backdrop-filter: blur(8px);
+      z-index: -1;
+    }
+
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 40px;
+      color: #00ffe0;
+      text-shadow: 0 0 10px #00fff2, 0 0 20px #ff00c8;
+      letter-spacing: 2px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 15px 35px;
+      margin: 12px;
+      font-size: 1.1rem;
+      color: #fff;
+      background: linear-gradient(135deg, #ff00cc, #3333ff);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 0, 200, 0.7);
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
+      background: linear-gradient(135deg, #00fff7, #ff00cc);
+    }
+
+    @media screen and (max-width: 600px) {
+      .content h1 {
+        font-size: 2.2rem;
+      }
+      .btn {
+        padding: 12px 25px;
+        margin: 8px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <video autoplay muted loop id="bg-video">
+    <source src="https://files.catbox.moe/4fiiya.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="content">
+    <h1>🚀POPKID GLE</h1>
+    <button onclick="window.open('/qr')" class="btn">🔳 QR Code</button>
+    <button onclick="window.open('/pair')" class="btn">🔗 Pair Code</button>
+    <button onclick="window.open('https://whatsapp.com/channel/0029VbB6d0KKAwEdvcgqrH26', '_blank')" class="btn">💬 WhatsApp</button>
+    <button onclick="window.open('https://github.com/devpopkid/POPKID-GLE.git', '_blank')" class="btn">⚙️ Deploy</button>
+  </div>
+
+  <script>
+    const video = document.getElementById('bg-video');
+    video.play();
+    document.addEventListener('click', function () {
+      video.muted = false;
+    });
+  </script>
+</body>
+</html>

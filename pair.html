@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>POPKID SESSIONS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      background: url('https://files.catbox.moe/hlqbzi.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    .status-bar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 10px 20px;
+      border-radius: 15px;
+      display: flex;
+      gap: 20px;
+      font-size: 0.9rem;
+      color: #fff;
+      font-weight: bold;
+      z-index: 999;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+      max-width: 350px;
+      width: 90%;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #text {
+      color: #ffeef0;
+    }
+
+    .centered-text {
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .input-container {
+      display: flex;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(255, 182, 193, 0.3);
+    }
+
+    .input-container input {
+      flex: 1;
+      border: none;
+      padding: 1rem;
+      background: transparent;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .input-container input::placeholder {
+      color: #ffd6e8;
+    }
+
+    .input-container input:focus {
+      outline: none;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .input-container button {
+      background: linear-gradient(to right, #ff69b4, #ff1493);
+      border: none;
+      padding: 1rem;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(to right, #ff85c1, #ff3385);
+    }
+
+    #copy {
+      cursor: pointer;
+      color: #ffffcc;
+      font-weight: bold;
+    }
+
+    @media (max-width: 500px) {
+      .input-container {
+        flex-direction: column;
+      }
+
+      .input-container input,
+      .input-container button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Time & Battery Info -->
+  <div class="status-bar">
+    <div id="current-time">--:--:--</div>
+    <div id="battery-status">Battery: --%</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="box" id="box">
+      <div id="text">
+        <i class="fa fa-heart fa-2x"></i>
+        <h3 class="centered-text">POPKID GLE❣️</h3>
+        <h6>Enter your number with country code</h6>
+        <div class="input-container">
+          <input placeholder="254111385747" type="number" id="number">
+          <button id="submit">Submit</button>
+        </div>
+        <a id="waiting-message" class="centered-text" style="display: none;">PLEASE WAIT 🥰</a>
+        <br><br>
+        <main id="pair"></main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  
+  <!-- Script Logic -->
+  <script>
+    const timeEl = document.getElementById("current-time");
+    const batteryEl = document.getElementById("battery-status");
+
+    function updateTime() {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    navigator.getBattery?.().then(battery => {
+      function updateBattery() {
+        batteryEl.textContent = `Battery: ${Math.round(battery.level * 100)}%`;
+      }
+      updateBattery();
+      battery.addEventListener('levelchange', updateBattery);
+    });
+
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      let code = obj.querySelector('span').innerText;
+      await navigator.clipboard.writeText(code);
+      obj.innerText = "COPIED";
+      obj.style = "color:lightgreen;font-weight:bold";
+      setTimeout(() => {
+        obj.innerHTML = 'tap to copy: <span>' + code + '</span>';
+        obj.style = "color:#ffffcc;font-weight:bold";
+      }, 500);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<a style="color:#ffc0cb;font-weight:bold">Enter your WhatsApp number with country code</a><br><br>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<a style="color:#ffcccb;font-weight:bold">Number too short</a><br><br>';
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        let bb = "", bbc = "";
+        const cc = bc.split('');
+        cc.map(a => {
+          bbc += a;
+          if (bbc.length == 3 || bbc.length == 8) {
+            bb += " " + a;
+          } else {
+            bb += a;
+          }
+        });
+        c.type = "text";
+        c.value = "+" + bb;
+        c.style = "color:#fff;font-size:20px";
+        a.innerHTML = '<a style="color:#ffe4e1;font-weight:bold">Please wait for some time</a><br><br>';
+        let { data } = await axios(`/code?number=${bc}`);
+        let code = data.code || "Service Unavailable";
+        a.innerHTML = `<div id="copy" onclick="Copy()">tap to copy: <span>${code}</span></div><br><br>`;
+      }
+    });
+  </script>
+</body>
+</html>
